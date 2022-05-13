@@ -1,31 +1,41 @@
 {
-  "name": "foodrecipe-app---api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
-  },
-  "author": "EdoPrayoga",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "body-parser": "^1.19.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "helmet": "^5.0.2",
-    "jsonwebtoken": "^8.5.1",
-    "multer": "^1.4.4",
-    "pg": "^8.7.3",
-    "xss-clean": "^0.1.1"
-  },
-  "devDependencies": {
-    "eslint": "^7.32.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0"
-  }
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon ./index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint": "^8.13.0",
+        "eslint-config-standard": "^17.0.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-n": "^15.1.0",
+        "eslint-plugin-promise": "^6.0.0",
+        "nodemon": "^2.0.15"
+    },
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "body-parser": "^1.19.1",
+        "concurrently": "^7.0.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.0",
+        "ejs": "^3.1.7",
+        "express": "^4.17.3",
+        "express-validator": "^6.14.0",
+        "helmet": "^5.0.2",
+        "jsonwebtoken": "^8.5.1",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.4",
+        "nodemailer": "^6.7.3",
+        "nodemailer-express-handlebars": "^5.0.0",
+        "path": "^0.12.7",
+        "pg": "^8.7.3",
+        "uuid": "^8.3.2",
+        "xss-clean": "^0.1.1"
+    }
 }
