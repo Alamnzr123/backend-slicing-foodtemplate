@@ -5,7 +5,10 @@ const db = new Pool({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DB_NAME,
-  port: process.env.DB_PORT
+  port: process.env.DB_PORT,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 })
 db.connect((err) => {
   if (err) {
