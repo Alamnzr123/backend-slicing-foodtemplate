@@ -25,7 +25,8 @@
 - [Environment Variables](#Environment-Variables)
 - [Project Structure](#Project-Structure)
 - [API Documentation](#API-Documentation)
-- [Screenshot](#Screenshot)
+- [Packages Included](#Packages Included)
+- [Tools and Technologies](#Tools and Technologies)
 
 ## Features
 
