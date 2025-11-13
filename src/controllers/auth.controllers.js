@@ -45,7 +45,19 @@ const authController = {
           })
         })
         .catch((err) => {
-          failed(res, err.message, 'failed', 'Email already registered') // output if email already registered
+          // authModel.checkEmailRegistered rejects with a specific Error when the email exists,
+          // but will also reject with DB errors (for example: relation "users" does not exist).
+          const msg = err && err.message ? err.message.toString() : ''
+          if (msg.includes('Email telah terdaftar')) {
+            // explicit business validation: email already registered
+            failed(res, null, 'failed', 'Email already registered')
+          } else if (msg.includes('relation') || msg.includes('does not exist')) {
+            // likely the users table doesn't exist or DB not initialized
+            failed(res, msg, 'failed', 'Database not initialized (missing users table)')
+          } else {
+            // fallback for other DB errors
+            failed(res, msg || err, 'failed', 'Internal Server Error')
+          }
         })
     } catch (err) {
       failed(res, err.message, 'failed', 'Internal Server Error') // output if catching error
