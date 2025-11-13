@@ -1,33 +1,5 @@
 # backend-slicing-foodtemplate
 
-## Installation
-
-1. Clone the repo `git clone https://github.com/Alamnzr123/backend-slicing-foodtemplate/`
-2. Run `npm install` to install the dependencies
-3. Import database `mama_recipe` to your PostgreSQL ([Backup and Restore PostgreSQL](https://www.postgresql.org/docs/8.1/backup.html#BACKUP-DUMP-RESTORE))
-4. Set the environment variables:
-   - `PORT` : fill for set the API running port
-   - `HOST` : fill with HOSTNAME in your postgreSQL configuration
-   - `USER` : fill with USERNAME in your postgreSQL configuration
-   - `DB_NAME` : fill with the DATABASE NAME or leave it filled with `mama_recipe` if you isn't rename the database
-   - `PASSWORD` : fill with PASSWORD in your postgreSQL configuration
-   - `SERVER_PORT` : fill with PORT in your postgreSQL configuration
-   - `JWT_SECRET` : fill with JWT key configuration
-5. Run with :
-   - `npm run start` : if you want to run it in client mode (use `node`) without auto restart on every changing code
-   - `npm run dev` : if you want to run it in developer mode (use `nodemon`) every change and save it will auto restart
-6. You are Ready to Go
-
-## Table of contents
-
-- [Features](#Features)
-- [Commands](#Commands)
-- [Environment Variables](#Environment-Variables)
-- [Project Structure](#Project-Structure)
-- [API Documentation](#API-Documentation)
-- [Packages Included](#Packages Included)
-- [Tools and Technologies](#Tools and Technologies)
-
 ## Features
 
 - **SQL database:** using [PostgreSQL](https://www.postgresql.org/)
@@ -41,28 +13,6 @@
 - **Linting:** with [ESlint](https://eslint.org/) and [Prettier](https://prettier.io/)
 - **CRUD:** with [ReactJS](https://reactjs.org/) and [ExpressJS](https://expressjs.com/)
 - **JSON Web Token:** using [JWT](https://jwt.io/)
-
-## Commands
-
-Running in client mode:
-
-```
-npm run start
-```
-
-Running in developer mode:
-
-```
-npm run dev
-```
-
-Testing:
-
-```
-npm run test
-```
-
-# backend-slicing-foodtemplate
 
 This repository is a small Express + PostgreSQL backend for recipe management. The README below has been updated to reflect recent maintenance and improvements made to the project.
 
