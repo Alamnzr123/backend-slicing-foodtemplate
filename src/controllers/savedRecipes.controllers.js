@@ -1,17 +1,17 @@
 const savedRecipes = require('../models/savedRecipes.model')
-//method
+// method
 const savedRecipesControllers = {
-    //format pemanggila
-    list_savedRecipes: (req, res) => {
-        savedRecipes
-        .selectAll()
-        .then((result) => {
-            res.json(result)
-        })
-        .catch((err) => {
-            res.json(err)
-        });
-    }
+  // format pemanggila
+  list_savedRecipes: (req, res) => {
+    savedRecipes
+      .selectAll()
+      .then((result) => {
+        res.json(result)
+      })
+      .catch((err) => {
+        res.json(err)
+      })
+  }
 }
 
-module.exports = savedRecipesControllers;
+module.exports = savedRecipesControllers

@@ -62,123 +62,114 @@ Testing:
 npm run test
 ```
 
-Linting:
+# backend-slicing-foodtemplate
 
-```
-npm run lint -- --fix
-```
+This repository is a small Express + PostgreSQL backend for recipe management. The README below has been updated to reflect recent maintenance and improvements made to the project.
 
-## Environment Variables
+Summary of recent changes
 
-The environment variables can be found and modified in the `.env` file. They come with these default values:
+- Upgraded multiple dependencies to remove deprecated/unsafe versions and lower advisories (e.g., bcrypt, dotenv, helmet, pg, etc.).
+- Upgraded major libraries where needed for security fixes (jsonwebtoken -> v9, multer -> v2, nodemailer -> v7). I adjusted JWT usage to explicitly require HS256 and wrapped signing in a Promise.
+- Added a resilient cache module: `src/config/cache.js` — prefers Redis (when REDIS_URL is set) and falls back to an in-memory Map when Redis is unavailable.
+- Integrated caching for recipes: list endpoints cached for 60s and recipe detail cached for 300s; cache invalidation implemented on create/update/delete.
+- Added an API Gateway: `gateway.js` using `http-proxy-middleware` that proxies `/api/*` to the backend (default gateway port 4000).
+- Added Docker support: `Dockerfile` and `docker-compose.yml` (Postgres + Redis + app) for local development.
+- Ran ESLint fixes and cleaned up a number of style issues.
+- Removed duplicate source files in `src/models` and `src/router` (kept the canonical filenames used by the code).
 
-```
-# Port number
-PORT=3001
+Quick start (dev)
 
-# Setting PostgreSQL
-PGHOST='YOUR HOST'
-PGUSER='YOUR USERNAME'
-PGDATABASE='YOUR DATABASE'
-PGPASSWORD='YOUR PASSWORD'
-PGPORT=5432
+1. Clone the repo
 
-# JWT
-# JWT secret key
-JWT_SECRET=thisisasamplesecret
-```
+   git clone https://github.com/Alamnzr123/backend-slicing-foodtemplate.git
 
-## Project Structure
+2. Install dependencies (PowerShell recommended on Windows):
 
-```
-|── Backend
-   |── public          # Asset Public
-   |── src             # Project source code
-       |── config      # Configuration database
-       |── controllers # Route controller
-       |── helpers     # Helpers
-       |── middleware  # Custom express middleware
-       |── models      # Models
-       |── router      # Routes
-   |── .env            # Setup environment
-   |── .eslintrc.json  # ESlint
-   |── .gitignore      # File name for not uploaded on github
-   ├── index.js        # App entry point
-   |── mama_recipe.sql # Database
+```powershell
+Set-Location -Path 'F:\backend-slicing-foodtemplate'
+npm install --legacy-peer-deps
 ```
 
-## API Documentation
-
-### API Endpoints - Backend
-
-List of available routes:
-
-**Auth Route**\
-`POST /register` - register\
-`POST /login` - login\
-
-**User Route**\
-`GET /list/user` - get all users\
-`GET /detail/user/:id` - get user by id\
-`PUT /edit/user/:id` - change user profile\
-`DELETE /delete/user/:id` - delete user by id
-
-**Recipe Route**\
-`GET /show/myrecipe` - get your own recipes\
-`GET /list/recipe` - get all recipe\
-`POST /insert/recipe` - create new recipe\
-`PUT /edit/recipe/:id` - update recipe by id\
-`DELETE /delete/recipe/:id` - delete recipe by id
-
-### API Endpoints - Frontend
-
-List of available routes:
-
-`PATH /` - Access Home Page\
-`PATH /register` - Access Register Page\
-`PATH /forgotpass` - Access Forgot Password Page\
-`PATH /resetpass` - Access Reset Password Page\
-`PATH /videorecipe` - Access Video Recipe Page\
-`PATH /resetpasscode` - Access Reset Password Code Page\
-`PATH /profile` - Access Profile Page\
-`PATH /changeprofile` - Access Change Profile Page\
-`PATH /login` - Access Login Page\
-`PATH /addrecipe` - Access Add Recipe Page\
-`PATH /editrecipe/:id` - Access Edit Recipe Page\
-`PATH /recipedetail` - Access Recipe Detail Page\
+3. Create `.env` (example):
 
 ```
-
-## Tools and Technologies
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
-![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white)
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
-![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+SERVER_PORT=3001
+HOST=localhost
+USER=postgres
+PASSWORD=postgres
+DB_NAME=mama_recipe
+DB_PORT=5432
+JWT_SECRET=your_jwt_secret
+# Optional Redis URL (when set, cache will use Redis)
+REDIS_URL=redis://localhost:6379
 ```
 
-## Packages Included
+4. Start the backend only:
 
-- NPM dependencies
+```powershell
+npm run start:backend
+```
 
-  ![](https://img.shields.io/badge/bcrypt-v5.0.1-blue)
-  ![](https://img.shields.io/badge/body--parser-v1.19.2-blue)
-  ![](https://img.shields.io/badge/cors-v2.8.5-blue)
-  ![](https://img.shields.io/badge/dotenv-v16.0.0-blue)
-  ![](https://img.shields.io/badge/express-v4.17.3-blue)
-  ![](https://img.shields.io/badge/express--validator-v5.3.1-blue)
-  ![](https://img.shields.io/badge/helmet-v5.0.2-blue)
-  ![](https://img.shields.io/badge/pg-v8.7.3-blue)
-  ![](https://img.shields.io/badge/multer-v1.4.4-blue)
-  ![](https://img.shields.io/badge/xss--clean-v0.1.1-blue)
-  ![](https://img.shields.io/badge/jsonwebtoken-v8.5.1-blue)
-  ![](https://img.shields.io/badge/sweetalert-v2.1.2-blue)
-  ![](https://img.shields.io/badge/reactstrap-v9.0.2-blue)
-  ![](https://img.shields.io/badge/react-router-dom-v6.3.0-blue)
-  ![](https://img.shields.io/badge/react-dom-v17.0.2-blue)
-  ![](https://img.shields.io/badge/react-v17.0.2-blue)
-  ![](https://img.shields.io/badge/jwt-decode-v3.1.2-blue)
-  ![](https://img.shields.io/badge/axios-v0.26.1-blue)
-  ![](https://img.shields.io/badge/bootstrap-v5.1.3-blue)
+5. Start the gateway (or run both):
+
+```powershell
+npm run start:gateway
+# or run both in one terminal
+npm run docker-start
+```
+
+Notes about Docker
+
+- Build + run using docker-compose (recommended for local development with DB + Redis):
+
+```powershell
+docker-compose up --build
+```
+
+The compose file provisions:
+
+- Postgres (5432) with a database named `mama_recipe`
+- Redis (6379)
+- The app (backend on 3001, gateway on 4000)
+
+Cache behavior and integration
+
+- The app exposes a small cache utility at `src/config/cache.js` with API: init(), get(key), set(key, value, ttlSeconds), del(key), invalidate(prefix).
+- Set `REDIS_URL` in the environment to use Redis. If not set, the module logs a warning and uses an in-memory Map (non-persistent, local only).
+- Recipes caching: list endpoint cached 60s, detail cached 300s. On recipe create/update/delete the cache prefix `recipes:` is invalidated.
+
+Gateway behavior
+
+- `gateway.js` proxies `/api/*` to the backend at http://localhost:3001 by default. The gateway listens on port 4000 (configurable via GATEWAY_PORT env var).
+
+Important upgrade notes and potential breaking changes
+
+- jsonwebtoken v9: I updated calls to explicitly specify algorithms (HS256). If you previously relied on older default behavior, review `src/helper/generateToken.js` and `src/middleware/jwtAuth.js` changes.
+- multer v2: API changes exist between multer v1 and v2. I kept your existing middleware working where possible, but please test file uploads in staging to ensure behavior remains correct.
+- nodemailer v7: this is a major bump; if you use any email-sending flows, test them.
+
+Linting and code cleanup
+
+- I ran ESLint and applied auto-fixes; I also manually fixed several files to meet the project's style rules.
+
+Removed duplicates
+
+- Removed redundant files in `src/models/` (kept canonical `*.model.js` files) and removed an unused router `src/router/user.router.js`.
+
+Scripts (use from project root)
+
+- `npm run start` — starts backend with nodemon (dev)
+- `npm run start:backend` — starts backend (node)
+- `npm run start:gateway` — starts gateway (node)
+- `npm run docker-start` — runs backend and gateway concurrently
+
+Testing and verification
+
+- After starting the services, use Postman or curl to test endpoints. The gateway proxies `/api/*` to the backend, so a request to `http://localhost:4000/api/list/recipe` will be forwarded to `http://localhost:3001/list/recipe`.
+
+Changelog (high level)
+
+- Dependency upgrades (security): bcrypt, dotenv, helmet, pg, jsonwebtoken, multer, nodemailer, nodemon, and others.
+- Security fixes applied via `npm audit` and selective major upgrades where required.
+- Added `src/config/cache.js`, `gateway.js`, `Dockerfile`, and `docker-compose.yml`.
+- ESLint fixes and duplicate file removal.

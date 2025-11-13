@@ -8,6 +8,7 @@ const userRoute = require('./src/router/user.route')
 const recipeRoute = require('./src/router/recipe.route')
 const authRoute = require('./src/router/auth.route')
 const morgan = require('morgan')
+const cache = require('./src/config/cache')
 
 const app = express()
 app.use(cors())
@@ -21,7 +22,11 @@ app.use(authRoute)
 app.use(userRoute)
 app.use(recipeRoute)
 app.use(express.static('public'))
-const serverPort = process.env.SERVER_PORT
-app.listen(serverPort, () => {
-  console.log(`Service running on port ${serverPort}`)
-})
+const serverPort = process.env.SERVER_PORT || 3001
+
+;(async () => {
+  await cache.init()
+  app.listen(serverPort, () => {
+    console.log(`Service running on port ${serverPort}`)
+  })
+})()

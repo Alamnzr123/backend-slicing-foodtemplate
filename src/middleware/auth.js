@@ -1,33 +1,33 @@
-const { failed } = require("../helper/response");
+const { failed } = require('../helper/response')
 module.exports = {
   isAdmin: async (req, res, next) => {
     if (req.APP_DATA.tokenDecoded.level === 0) {
-      await next();
+      await next()
     } else {
-      failed(res, null, "failed", "forbidden access");
+      failed(res, null, 'failed', 'forbidden access')
     }
   },
   isCustomer: async (req, res, next) => {
     if (req.APP_DATA.tokenDecoded.level === 1) {
-      await next();
+      await next()
     } else {
-      failed(res, null, "failed", "forbidden access");
+      failed(res, null, 'failed', 'forbidden access')
     }
   },
   isCustomerWithSameId: async (req, res, next) => {
     if (req.APP_DATA.tokenDecoded.id === Number(req.params.id)) {
-      await next();
+      await next()
     } else {
-      failed(res, null, "failed", "forbidden access");
+      failed(res, null, 'failed', 'forbidden access')
     }
   },
   isAdminOrCustomerWithSameId: (req, res, next) => {
     if (req.APP_DATA.tokenDecoded.level === 0) {
-      next();
+      next()
     } else if (req.APP_DATA.tokenDecoded.id === Number(req.params.id)) {
-      next();
+      next()
     } else {
-      failed(res, null, "failed", "forbidden access");
+      failed(res, null, 'failed', 'forbidden access')
     }
-  },
-};
+  }
+}

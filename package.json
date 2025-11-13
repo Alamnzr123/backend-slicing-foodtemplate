@@ -1,10 +1,13 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "description": "",
+    "description": "An backend for slicing food template project",
     "main": "index.js",
     "scripts": {
         "start": "nodemon ./index.js",
+        "start:backend": "node ./index.js",
+        "start:gateway": "node ./gateway.js",
+        "docker-start": "concurrently \"node index.js\" \"node gateway.js\"",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -16,26 +19,27 @@
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-n": "^15.1.0",
         "eslint-plugin-promise": "^6.0.0",
-        "nodemon": "^2.0.15"
+        "nodemon": "^3.1.11"
     },
     "dependencies": {
-        "bcrypt": "^5.0.1",
-        "body-parser": "^1.19.1",
-        "concurrently": "^7.0.0",
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.3",
+        "concurrently": "^7.6.0",
+        "redis": "^4.6.7",
         "cors": "^2.8.5",
-        "dotenv": "^16.0.0",
-        "ejs": "^3.1.7",
-        "express": "^4.17.3",
-        "express-validator": "^6.14.0",
-        "helmet": "^5.0.2",
-        "jsonwebtoken": "^8.5.1",
-        "morgan": "^1.10.0",
-        "multer": "^1.4.4",
-        "nodemailer": "^6.7.3",
-        "nodemailer-express-handlebars": "^5.0.0",
-        "path": "^0.12.7",
-        "pg": "^8.7.3",
+        "dotenv": "^16.6.1",
+        "ejs": "^3.1.10",
+        "express": "^4.21.2",
+        "express-validator": "^6.15.0",
+        "helmet": "^5.1.1",
+        "http-proxy-middleware": "^3.0.5",
+        "jsonwebtoken": "^9.0.2",
+        "morgan": "^1.10.1",
+        "multer": "^2.0.2",
+        "nodemailer": "^7.0.10",
+        "nodemailer-express-handlebars": "^7.0.0",
+        "pg": "^8.16.3",
         "uuid": "^8.3.2",
-        "xss-clean": "^0.1.1"
+        "xss-clean": "^0.1.4"
     }
 }
