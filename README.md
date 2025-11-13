@@ -123,3 +123,67 @@ Changelog (high level)
 - Security fixes applied via `npm audit` and selective major upgrades where required.
 - Added `src/config/cache.js`, `gateway.js`, `Dockerfile`, and `docker-compose.yml`.
 - ESLint fixes and duplicate file removal.
+
+## Database initialization & ensuring schema
+
+The project includes a SQL dump `mama_recipe.sql` (located at the repository root) which defines the tables used by the application (users, recipes, comments, saved_recipes, liked_recipes, etc.). The Docker Compose configuration now mounts this file into Postgres's initialization directory so a fresh database will be created with the schema automatically.
+
+How the Docker init works
+
+- The official Postgres Docker image runs any `*.sql` or `*.sh` files placed into `/docker-entrypoint-initdb.d/` when the Postgres data directory is empty (i.e. on first initialization of the database). This means:
+  - If you start the compose stack with no existing named volume for Postgres, the SQL file will be executed and the schema created automatically.
+  - If the Postgres named volume (`pgdata`) already contains a database, the init scripts will NOT run again.
+
+Common scenarios and how to handle them
+
+1. Fresh setup (no existing DB volume) — automatic schema apply
+
+```powershell
+# from f:\slicing-fullstack\backend-slicing-foodtemplate
+docker-compose up --build -d
+# The postgres container will run /docker-entrypoint-initdb.d/mama_recipe.sql
+# automatically and create the database + tables. Check logs to confirm:
+docker-compose logs -f postgres
+```
+
+2. You already have a pgdata volume and want to re-run the init script (force re-init)
+
+Warning: this will permanently delete the existing database data in the named volume.
+
+```powershell
+# Stop and remove containers and named volumes declared in compose
+docker-compose down -v
+
+# Recreate (the postgres container will now initialize the DB and run the SQL file)
+docker-compose up --build -d
+```
+
+3. Import the SQL into an existing running Postgres container (without removing volumes)
+
+If you don't want to delete the existing volume, you can import the SQL manually into the running Postgres container.
+
+```powershell
+# find the postgres container name (or use the one from `docker-compose ps`)
+docker-compose ps
+
+# copy the SQL file into the container (replace <postgres_container> with the actual name)
+docker cp ./mama_recipe.sql <postgres_container>:/tmp/mama_recipe.sql
+
+# execute the SQL as the postgres user against the mama_recipe database
+docker exec -u postgres -it <postgres_container> psql -U postgres -d mama_recipe -f /tmp/mama_recipe.sql
+```
+
+4. Quick checks to see whether the `users` table exists
+
+```powershell
+# list tables
+docker exec -u postgres -it <postgres_container> psql -U postgres -d mama_recipe -c "\dt"
+
+# try a simple select (will error if table doesn't exist)
+docker exec -u postgres -it <postgres_container> psql -U postgres -d mama_recipe -c "select count(*) from users;"
+```
+
+Notes
+
+- The compose file now mounts `./mama_recipe.sql` to `/docker-entrypoint-initdb.d/mama_recipe.sql`. This only affects fresh DB initialization. If you plan to use the DB persistently across restarts, do not remove the named volume unless you intend to wipe data and reinitialize.
+- If you run into `relation "users" does not exist` or similar errors after bringing up the stack, check whether the Postgres volume is already present (and therefore the init script didn't run). Use the commands above to either import manually or recreate the volume.

@@ -8,6 +8,12 @@
         "start:backend": "node ./index.js",
         "start:gateway": "node ./gateway.js",
         "docker-start": "concurrently \"node index.js\" \"node gateway.js\"",
+        "docker:build": "docker build -t backend-slicing-foodtemplate:local .",
+        "docker:build:ps": "powershell -Command \"docker build -t backend-slicing-foodtemplate:local .\"",
+        "docker:run": "docker run -p 3001:3001 -p 4000:4000 backend-slicing-foodtemplate:local",
+        "docker:compose:up": "docker-compose up --build -d",
+        "docker:compose:down": "docker-compose down",
+        "docker:logs": "docker-compose logs -f",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],

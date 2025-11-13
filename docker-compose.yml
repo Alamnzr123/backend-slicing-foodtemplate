@@ -10,6 +10,13 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      # If you want the database to be created with the project's schema automatically
+      # on first run, mount the SQL dump into the initdb directory. This runs only
+      # when the Postgres data directory is empty (i.e. the named volume does not
+      # already contain a database). If you already have a pgdata volume, remove it
+      # (or run the manual import commands documented in README.md) to apply the
+      # SQL file.
+      - ./mama_recipe.sql:/docker-entrypoint-initdb.d/mama_recipe.sql:ro
 
   redis:
     image: redis:7-alpine
