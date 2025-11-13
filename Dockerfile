@@ -7,8 +7,8 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install app dependencies
-RUN npm ci --omit=dev
+# Install app dependencies (use npm install to be more tolerant in CI/build environments)
+RUN npm install --production --no-audit --no-fund
 
 # Copy app source
 COPY . .

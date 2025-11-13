@@ -17,7 +17,17 @@ app.use(helmet({
   crossOriginResourcePolicy: false
 }))
 app.use(xss())
-app.use(bodyParser.json())
+// parse JSON bodies
+// capture raw body so we can log malformed JSON when parsing fails
+app.use(bodyParser.json({
+  limit: '10mb',
+  verify: (req, res, buf) => {
+    // attach the raw body buffer for later debugging
+    req.rawBody = buf.toString('utf8')
+  }
+}))
+// also parse URL-encoded bodies (from forms or axios when not sending JSON)
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }))
 app.use(authRoute)
 app.use(userRoute)
 app.use(recipeRoute)
@@ -30,3 +40,28 @@ const serverPort = process.env.SERVER_PORT || 3001
     console.log(`Service running on port ${serverPort}`)
   })
 })()
+
+// error handling middleware for bodyParser JSON parse errors
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception', err && err.stack)
+})
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Rejection at:', reason)
+})
+
+// express error handler to catch JSON parse errors and return a 400
+app.use((err, req, res, next) => {
+  if (err && err.type === 'entity.parse.failed') {
+    // log the raw body for debugging (avoid logging in production)
+    console.error('JSON parse error, raw body:', req.rawBody)
+    return res.status(400).json({
+      code: 400,
+      status: 'failed',
+      message: 'Invalid JSON payload',
+      error: err.message
+    })
+  }
+  // pass through other errors
+  next(err)
+})

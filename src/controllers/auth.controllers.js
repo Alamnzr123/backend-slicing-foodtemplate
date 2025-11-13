@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const authModel = require('../models/auth.models')
 const { success, failed, successWithToken } = require('../helper/response')
 const jwtToken = require('../helper/generateToken')
